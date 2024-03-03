@@ -1,5 +1,7 @@
 package com.Unyime.springTutorial;
 
+import com.Unyime.springTutorial.domain.dto.AuthorDto;
+import com.Unyime.springTutorial.domain.dto.BookDto;
 import com.Unyime.springTutorial.domain.entities.AuthorEntity;
 import com.Unyime.springTutorial.domain.entities.BookEntity;
 
@@ -68,6 +70,14 @@ public final class TestDataUtil {
                 .isbn("978-1-2345-6789-2")
                 .title("The Shadow in the Attic")
                 .authorEntity(authorEntity)
+                .build();
+    }
+
+    public static BookDto createBookDto(final AuthorDto author) {
+        return BookDto.builder()
+                .isbn("978-1-2345-6789-2")
+                .title("The Shadow in the Attic")
+                .author(author)
                 .build();
     }
 }
