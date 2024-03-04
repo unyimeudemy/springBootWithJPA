@@ -76,8 +76,16 @@ public final class TestDataUtil {
     public static BookDto createBookDto(final AuthorDto author) {
         return BookDto.builder()
                 .isbn("978-1-2345-6789-2")
-                .title("The Shadow in the Attic")
+                .title("The Shadow in the Basement")
                 .author(author)
+                .build();
+    }
+
+    public static AuthorDto createAuthorDto() {
+        return AuthorDto.builder()
+                .id(3L)
+                .name("Angela Rose")
+                .age(70)
                 .build();
     }
 }

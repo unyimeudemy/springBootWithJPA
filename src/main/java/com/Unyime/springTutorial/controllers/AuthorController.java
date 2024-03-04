@@ -51,7 +51,12 @@ public class AuthorController {
 
     @PutMapping(path = "/authors/{id}")
     public ResponseEntity<AuthorDto> fullUpdateAuthor(@PathVariable("id") Long id, @RequestBody AuthorDto authorDto){
-
+        /*
+         * in full update you provide an author object to replace
+         * a match in the database. But in partial update you will
+         * only need to provide a specific field that you intend to
+         * update.
+         */
         if(!authorService.isExists(id)){
             return new ResponseEntity<AuthorDto>(HttpStatus.NOT_FOUND);
         }
@@ -59,6 +64,26 @@ public class AuthorController {
         AuthorEntity authorEntity = authorMapper.mapFrom(authorDto);
         AuthorEntity savedAuthorEntity = authorService.save(authorEntity);
         AuthorDto savedAuthorDto = authorMapper.mapTo(savedAuthorEntity);
-        return new ResponseEntity<>(savedAuthorDto, HttpStatus.CREATED);
+        return new ResponseEntity<>(savedAuthorDto, HttpStatus.OK);
+    }
+    
+    @PatchMapping(path = "/authors/{id}")
+    public ResponseEntity<AuthorDto> partialUpdate(
+            @PathVariable("id") Long id, @RequestBody AuthorDto authorDto
+    ){
+        if(!authorService.isExists(id)){
+            return new ResponseEntity<AuthorDto>(HttpStatus.NOT_FOUND);
+        }
+
+        AuthorEntity authorEntity = authorMapper.mapFrom(authorDto);
+        AuthorEntity updatedAuthorEntity = authorService.partialUpdate(id, authorEntity);
+        AuthorDto updatedAuthorDto = authorMapper.mapTo(updatedAuthorEntity);
+        return new ResponseEntity<AuthorDto>(updatedAuthorDto, HttpStatus.OK);
+    }
+
+    @DeleteMapping(path = "/authors/{id}")
+    public ResponseEntity deleteAuthor(@PathVariable("id") Long id){
+        authorService.delete(id);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 }
